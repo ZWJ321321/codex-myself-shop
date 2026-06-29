@@ -1,5 +1,8 @@
 .codex/
 .agents/
+.idea/
+node_modules/
+dist/
 
 preview*.png
 
