@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.test.client import Client
 
 from apps.catalog.models import Category, Dish
 from apps.orders.models import Order
@@ -66,3 +67,17 @@ class OrderApiTests(TestCase):
         )
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json()["code"], "validation_error")
+
+    def test_create_order_accepts_json_without_csrf_token(self):
+        client = Client(enforce_csrf_checks=True)
+        response = client.post(
+            "/api/orders/",
+            data={
+                "customer_name": "赵六",
+                "phone": "13800138001",
+                "note": "csrf回归测试",
+                "items": [{"dish_id": self.dish.id, "quantity": 1}],
+            },
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 201)
