@@ -49,3 +49,20 @@ class OrderApiTests(TestCase):
         )
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json()["code"], "validation_error")
+
+    def test_create_order_rejects_unavailable_dish(self):
+        self.dish.is_available = False
+        self.dish.save(update_fields=["is_available"])
+
+        response = self.client.post(
+            "/api/orders/",
+            data={
+                "customer_name": "王五",
+                "phone": "13800138000",
+                "note": "",
+                "items": [{"dish_id": self.dish.id, "quantity": 1}],
+            },
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json()["code"], "validation_error")
