@@ -55,3 +55,42 @@ test('shared styles and ui helper still provide interactivity', async () => {
   assert.equal(isScrolled(40, 60), false);
   assert.equal(isScrolled(61, 60), true);
 });
+
+test('ordering helpers and section are wired into the Vue app', async () => {
+  const [app, ordering, helpers] = await Promise.all([
+    readFile(new URL('./src/App.vue', import.meta.url), 'utf8'),
+    readFile(new URL('./src/features/ordering/OrderingSection.vue', import.meta.url), 'utf8'),
+    import(new URL('./src/features/ordering/state.js', import.meta.url)),
+  ]);
+
+  const dish = { id: 7, name: '焦糖布丁', price: '36.00' };
+  const once = helpers.addCartItem([], dish);
+  const twice = helpers.addCartItem(once, dish);
+
+  assert.equal(twice[0].quantity, 2);
+  assert.equal(helpers.updateCartItemQuantity(twice, 7, 0).length, 0);
+  assert.deepEqual(
+    helpers.validateOrderDraft({ customerName: '', phone: '', note: '' }, []),
+    {
+      customerName: '请输入姓名',
+      phone: '请输入手机号',
+      items: '请至少选择一道菜',
+    }
+  );
+  assert.deepEqual(
+    helpers.buildOrderPayload(
+      { customerName: '张三', phone: '13800138000', note: '少冰' },
+      [{ dishId: 7, quantity: 2 }]
+    ),
+    {
+      customer_name: '张三',
+      phone: '13800138000',
+      note: '少冰',
+      items: [{ dish_id: 7, quantity: 2 }],
+    }
+  );
+
+  assert.match(app, /OrderingSection/);
+  assert.match(ordering, /id="ordering"/);
+  assert.match(ordering, /提交订单/);
+});

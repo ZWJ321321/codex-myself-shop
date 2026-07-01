@@ -1,5 +1,6 @@
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue';
+import OrderingSection from './features/ordering/OrderingSection.vue';
 import { createRevealObserver, isScrolled, revealVisible } from './ui.js';
 
 const navRef = ref(null);
@@ -201,6 +202,8 @@ onBeforeUnmount(() => {
           </article>
         </div>
       </section>
+
+      <OrderingSection />
 
       <section id="contact" class="contact section-shell" data-reveal>
         <div class="contact-panel">
