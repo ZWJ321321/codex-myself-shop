@@ -1,0 +1,32 @@
+﻿.order-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.order-status-pending {
+  color: #8a5a14;
+  background: #fff2cc;
+}
+
+.order-status-confirmed {
+  color: #0f5d5c;
+  background: #d9f2ef;
+}
+
+.order-status-completed {
+  color: #215732;
+  background: #dff3d8;
+}
+
+.order-status-cancelled {
+  color: #8f2639;
+  background: #f8d7df;
+}
+
+.inline-group .tabular tbody td {
+  vertical-align: top;
+}
