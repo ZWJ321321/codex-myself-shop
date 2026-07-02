@@ -11,6 +11,8 @@ class Category(TimeStampedModel):
 
     class Meta:
         ordering = ["sort_order", "id"]
+        verbose_name = "菜品分类"
+        verbose_name_plural = "菜品分类"
 
     def __str__(self):
         return self.name
@@ -27,6 +29,8 @@ class Dish(TimeStampedModel):
 
     class Meta:
         ordering = ["category__sort_order", "sort_order", "id"]
+        verbose_name = "菜品"
+        verbose_name_plural = "菜品"
 
     def __str__(self):
         return self.name

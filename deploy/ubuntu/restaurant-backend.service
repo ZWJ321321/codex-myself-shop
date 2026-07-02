@@ -1,0 +1,15 @@
+[Unit]
+Description=Restaurant Intro Django Backend
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/srv/restaurant-intro/backend
+EnvironmentFile=/etc/restaurant-intro.env
+ExecStart=/srv/restaurant-intro/backend/.venv/bin/gunicorn config.wsgi:application --bind 127.0.0.1:8000 --workers 3 --timeout 60
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
